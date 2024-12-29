@@ -11,7 +11,7 @@ const useStore = create(
       clearUser: () => set({ user: null, token: null }),
     }),
     {
-      name: "user-store", // Name of the storage key in localStorage
+      name: "user-store", 
     }
   )
 );

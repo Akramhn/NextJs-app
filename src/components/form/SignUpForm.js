@@ -6,7 +6,6 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-// Validation Schema
 const schema = yup.object().shape({
   fullName: yup
     .string()
@@ -32,13 +31,12 @@ export default function SignUpForm() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema), // Use the Yup schema for validation
+    resolver: yupResolver(schema),
   });
   const router = useRouter();
 
   const onSubmit = async (data) => {
     try {
-      // Remove confirmPassword before sending the request
       const { confirmPassword, ...userData } = data;
       await axios.post("http://localhost:5000/auth/register", userData);
       router.push("/sign-in");
@@ -48,84 +46,98 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-teal-400 to-blue-600 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Create an Account</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* Full Name */}
-          <div className="form-group mb-4">
-            <label className="form-label block text-sm font-medium text-gray-700">Full Name</label>
-            <input
-              type="text"
-              className={`form-control w-full px-3 py-2 mt-1 border rounded-md ${
-                errors.fullName ? "border-red-500" : "border-gray-300"
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register("fullName")}
-            />
-            {errors.fullName && (
-              <p className="text-sm text-red-500 mt-1">{errors.fullName.message}</p>
-            )}
+    <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black opacity-40"></div> 
+      
+      <div className="relative z-10 bg-white shadow-xl rounded-xl p-8 w-full max-w-md transform transition duration-500 hover:scale-105">
+        <div className="text-center mb-6">
+          <h2 className="text-4xl font-semibold text-gray-800 mb-2">Create Your Account</h2>
+          <p className="text-lg text-gray-600">Join us and experience a world of possibilities.</p>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label htmlFor="fullName" className="text-sm font-medium text-gray-700">Full Name</label>
+            <div className="relative mt-2">
+              <input
+                type="text"
+                id="fullName"
+                className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  errors.fullName ? "border-red-500" : "border-gray-300"
+                }`}
+                placeholder="Enter your full name"
+                {...register("fullName")}
+              />
+              <span className="absolute left-3 top-3 text-gray-500"><i className="fa fa-user"></i></span>
+            </div>
+            {errors.fullName && <p className="text-sm text-red-500 mt-1">{errors.fullName.message}</p>}
           </div>
 
-          {/* Email */}
-          <div className="form-group mb-4">
-            <label className="form-label block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              className={`form-control w-full px-3 py-2 mt-1 border rounded-md ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register("email")}
-            />
-            {errors.email && (
-              <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
-            )}
+          <div>
+            <label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</label>
+            <div className="relative mt-2">
+              <input
+                type="email"
+                id="email"
+                className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  errors.email ? "border-red-500" : "border-gray-300"
+                }`}
+                placeholder="Enter your email"
+                {...register("email")}
+              />
+              <span className="absolute left-3 top-3 text-gray-500"><i className="fa fa-envelope"></i></span>
+            </div>
+            {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
           </div>
 
-          {/* Password */}
-          <div className="form-group mb-4">
-            <label className="form-label block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              className={`form-control w-full px-3 py-2 mt-1 border rounded-md ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register("password")}
-            />
-            {errors.password && (
-              <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
-            )}
+          <div>
+            <label htmlFor="password" className="text-sm font-medium text-gray-700">Password</label>
+            <div className="relative mt-2">
+              <input
+                type="password"
+                id="password"
+                className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  errors.password ? "border-red-500" : "border-gray-300"
+                }`}
+                placeholder="Enter your password"
+                {...register("password")}
+              />
+              <span className="absolute left-3 top-3 text-gray-500"><i className="fa fa-lock"></i></span>
+            </div>
+            {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>}
           </div>
 
-          {/* Confirm Password */}
-          <div className="form-group mb-4">
-            <label className="form-label block text-sm font-medium text-gray-700">Confirm Password</label>
-            <input
-              type="password"
-              className={`form-control w-full px-3 py-2 mt-1 border rounded-md ${
-                errors.confirmPassword ? "border-red-500" : "border-gray-300"
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register("confirmPassword")}
-            />
-            {errors.confirmPassword && (
-              <p className="text-sm text-red-500 mt-1">{errors.confirmPassword.message}</p>
-            )}
+          <div>
+            <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">Confirm Password</label>
+            <div className="relative mt-2">
+              <input
+                type="password"
+                id="confirmPassword"
+                className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                }`}
+                placeholder="Confirm your password"
+                {...register("confirmPassword")}
+              />
+              <span className="absolute left-3 top-3 text-gray-500"><i className="fa fa-lock"></i></span>
+            </div>
+            {errors.confirmPassword && <p className="text-sm text-red-500 mt-1">{errors.confirmPassword.message}</p>}
           </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="btn btn-primary w-full py-2 mt-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Register
-          </button>
+          <div>
+            <button
+              type="submit"
+              className="w-full py-3 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            >
+              Register Now
+            </button>
+          </div>
         </form>
 
-        {/* Login Link */}
-        <div className="mt-4 text-center">
+        <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
-            <Link href="/sign-in" className="text-blue-600 hover:underline">Log in</Link>
+            <Link href="/sign-in" className="text-indigo-600 hover:underline">Log in</Link>
           </p>
         </div>
       </div>

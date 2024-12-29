@@ -5,14 +5,14 @@ import useStore from "../app/store/userStore";
 
 export default function UserInfo() {
   const { user, setUser, clearUser } = useStore();
-  const [loading, setLoading] = useState(true); // For session loading
-  const [logoutLoading, setLogoutLoading] = useState(false); // For logout loading
+  const [loading, setLoading] = useState(true); 
+  const [logoutLoading, setLogoutLoading] = useState(false); 
 
   useEffect(() => {
     const fetchSession = async () => {
       const session = await getSession();
       if (session) {
-        setUser(session.token.user || null); // Assuming `session.token.user` contains user data
+        setUser(session.token.user || null); 
       }
       setLoading(false);
     };
@@ -25,7 +25,7 @@ export default function UserInfo() {
   }, [user, setUser]);
 
   const handleLogout = async () => {
-    setLogoutLoading(true); // Start logout loader
+    setLogoutLoading(true); 
     await signOut({ redirect: true, callbackUrl: "/sign-in" }).then(()=>{
 
     });

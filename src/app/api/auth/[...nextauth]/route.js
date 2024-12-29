@@ -1,4 +1,4 @@
-// src/app/api/auth/[...nextauth]/route.js
+
 
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -14,7 +14,7 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         try {
-          // Send credentials to your backend API for authentication
+          
           const res = await axios.post("http://127.0.0.1:5000/auth/login", {
             email: credentials.email,
             password: credentials.password,
@@ -22,15 +22,15 @@ const handler = NextAuth({
 
           if (res.status === 200 && res.data.user) {
             const user = res.data.user;
-            user.token = res.data.token; // Store token in the user object
-            return user; // Return the user object to NextAuth
+            user.token = res.data.token; 
+            return user; 
           } else {
             console.warn("Authorization Failed: Invalid credentials.");
-            return null; // Return null if authorization fails
+            return null; 
           }
         } catch (error) {
           console.error("Login Error:", error.response?.data || error.message);
-          return null; // Return null if the request fails
+          return null; 
         }
       },
     }),
@@ -39,16 +39,16 @@ const handler = NextAuth({
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
-        token.user = user; // Attach the user info to the JWT token
+        token.user = user; 
       }
       return token;
     },
     session: async ({ session, token }) => {
-      session.token = token; // Attach the token info to the session
+      session.token = token; 
       return session;
     },
   },
 });
 
-// Export named HTTP methods
+
 export { handler as GET, handler as POST };
